@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/element2.dart';
 import 'package:build/build.dart';
 import 'package:code_builder/code_builder.dart';
 import 'package:floor_annotation/floor_annotation.dart' as annotations;
@@ -19,7 +20,7 @@ import 'package:source_gen/source_gen.dart';
 class FloorGenerator extends GeneratorForAnnotation<annotations.Database> {
   @override
   FutureOr<String> generateForAnnotatedElement(
-    final Element element,
+    final dynamic element,
     final ConstantReader annotation,
     final BuildStep buildStep,
   ) {
@@ -60,13 +61,13 @@ class FloorGenerator extends GeneratorForAnnotation<annotations.Database> {
     if (element is! ClassElement) {
       throw InvalidGenerationSourceError(
           'The element annotated with @Database is not a class.',
-          element: element);
+          element: element as Element2);
     }
 
     if (!element.isAbstract) {
       throw InvalidGenerationSourceError(
           'The database class has to be abstract.',
-          element: element);
+          element: element as Element2);
     }
 
     return DatabaseProcessor(element).process();
